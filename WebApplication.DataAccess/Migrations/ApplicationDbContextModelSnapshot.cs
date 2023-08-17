@@ -51,22 +51,22 @@ namespace WebApp.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0b1f5926-98ac-4efd-9265-efe544d48e5e",
-                            ConcurrencyStamp = "a244f836-5a19-4ab8-a3fb-e44edde360bd",
+                            Id = "d762988b-703b-42bc-ab0b-332cdfb1810e",
+                            ConcurrencyStamp = "f56838c1-bacd-4c35-b213-17de1a6b2a9b",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "283c8fc3-cd81-4a44-87d9-709a32d24f6f",
-                            ConcurrencyStamp = "9f465f08-d72e-4dc3-8029-d79ebd317767",
+                            Id = "9e657ddc-942c-44e8-9d2a-2ae268f505e9",
+                            ConcurrencyStamp = "5237ef76-9a6a-43e1-8d9e-52fce639e905",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "21bf7b02-e10d-44a6-a750-b7964d477402",
-                            ConcurrencyStamp = "f385d048-dba1-41f9-aff4-fa2640b93edc",
+                            Id = "661a6a0e-9f8d-46d8-8345-49a65aee3df2",
+                            ConcurrencyStamp = "7c783b7a-92c9-4b12-9b01-f4c6c1201bd7",
                             Name = "Host",
                             NormalizedName = "HOST"
                         });
@@ -186,6 +186,14 @@ namespace WebApp.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -202,6 +210,10 @@ namespace WebApp.DataAccess.Migrations
                     b.Property<int>("MinDaysForReservation")
                         .HasColumnType("int");
 
+                    b.Property<string>("Neighborhood")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("NumOfBathrooms")
                         .HasColumnType("int");
 
@@ -217,6 +229,9 @@ namespace WebApp.DataAccess.Migrations
                     b.Property<string>("ResidenceType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ResidentCapacity")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Smoking")
                         .HasColumnType("bit");

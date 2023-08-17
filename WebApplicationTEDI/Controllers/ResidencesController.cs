@@ -20,6 +20,10 @@ namespace WebAppTEDI.Controllers
         public async Task<ActionResult<List<Residence>>> GetResidence() {
             //Residence residence = new Residence();
             //residence.NumOfBeds = 1;
+            //residence.City = "Athens";
+            //residence.Country = "Greece";
+            //residence.ResidentCapacity = 5;
+            //residence.Neighborhood = "Nea Smyrni";
             //residence.NumOfBathrooms = 1;
             //residence.NumOfBedrooms = 2;
             //residence.ResidenceType = "Treehouse";
@@ -29,13 +33,17 @@ namespace WebAppTEDI.Controllers
             //residence.Smoking = false;
             //residence.Pets = true;
             //residence.Events = true;
-            //residence.MinDaysForReservation = 1;
+            //residence.MinDaysForReservation = 3;
             //residence.ImageURL = "KAPPP";
             //_unitOfWork.Residence.Add(residence);
             //_unitOfWork.Save();
 
             //Residence residence2 = new Residence();
             //residence2.NumOfBeds = 1;
+            //residence2.City = "Athens";
+            //residence2.Country = "Greece";
+            //residence2.ResidentCapacity = 8;
+            //residence2.Neighborhood = "Penteli";
             //residence2.NumOfBathrooms = 1;
             //residence2.NumOfBedrooms = 2;
             //residence2.ResidenceType = "Treehouse";
@@ -43,18 +51,45 @@ namespace WebAppTEDI.Controllers
             //residence2.SquareMeters = 100;
             //residence2.Description = "Description";
             //residence2.Smoking = false;
-            //residence2  .Pets = true;
+            //residence2.Pets = true;
             //residence2.Events = true;
-            //residence2.MinDaysForReservation = 1;
-            //residence2.ImageURL = "KEEPPP";
+            //residence2.MinDaysForReservation = 4;
+            //residence2.ImageURL = "KAPPP";
             //_unitOfWork.Residence.Add(residence2);
             //_unitOfWork.Save();
+           
+            //Residence residence3 = new Residence();
+            //residence3.NumOfBeds = 1;
+            //residence3.City = "Patra";
+            //residence3.Country = "Greece";
+            //residence3.ResidentCapacity = 3;
+            //residence3.Neighborhood = "Agia";
+            //residence3.NumOfBathrooms = 1;
+            //residence3.NumOfBedrooms = 2;
+            //residence3.ResidenceType = "Treehouse";
+            //residence3.LivingRoom = false;
+            //residence3.SquareMeters = 100;
+            //residence3.Description = "Description";
+            //residence3.Smoking = false;
+            //residence3.Pets = true;
+            //residence3.Events = true;
+            //residence3.MinDaysForReservation = 1;
+            //residence3.ImageURL = "KAPPP";
+            //_unitOfWork.Residence.Add(residence3);
+            //_unitOfWork.Save();
+
             return _unitOfWork.Residence.GetAll().ToList();
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<Residence>> FindResidence(int id)
+        public  ActionResult<Residence> FindResidence(int id)
         {
             return _unitOfWork.Residence.GetFirstOrDefault(x => x.Id == id);
+        }
+
+        [HttpGet("Search")]
+        public ActionResult<List<Residence>> GetResidenceSearch([FromQuery]ResidenceSearch residenceSearch)
+        {
+            return _unitOfWork.Residence.GetAllSearch(residenceSearch).ToList();
         }
     }
 }

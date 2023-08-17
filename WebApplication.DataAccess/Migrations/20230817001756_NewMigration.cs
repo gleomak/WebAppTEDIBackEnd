@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApp.DataAccess.Migrations
 {
-    public partial class Identity : Migration
+    public partial class NewMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,6 +46,34 @@ namespace WebApp.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Residences",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Neighborhood = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ResidentCapacity = table.Column<int>(type: "int", nullable: false),
+                    NumOfBeds = table.Column<int>(type: "int", nullable: false),
+                    NumOfBathrooms = table.Column<int>(type: "int", nullable: false),
+                    ResidenceType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumOfBedrooms = table.Column<int>(type: "int", nullable: false),
+                    LivingRoom = table.Column<bool>(type: "bit", nullable: false),
+                    SquareMeters = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Smoking = table.Column<bool>(type: "bit", nullable: false),
+                    Pets = table.Column<bool>(type: "bit", nullable: false),
+                    Events = table.Column<bool>(type: "bit", nullable: false),
+                    MinDaysForReservation = table.Column<int>(type: "int", nullable: false),
+                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Residences", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,17 +185,17 @@ namespace WebApp.DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "0b1f5926-98ac-4efd-9265-efe544d48e5e", "a244f836-5a19-4ab8-a3fb-e44edde360bd", "Member", "MEMBER" });
+                values: new object[] { "661a6a0e-9f8d-46d8-8345-49a65aee3df2", "7c783b7a-92c9-4b12-9b01-f4c6c1201bd7", "Host", "HOST" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "21bf7b02-e10d-44a6-a750-b7964d477402", "f385d048-dba1-41f9-aff4-fa2640b93edc", "Host", "HOST" });
+                values: new object[] { "9e657ddc-942c-44e8-9d2a-2ae268f505e9", "5237ef76-9a6a-43e1-8d9e-52fce639e905", "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "283c8fc3-cd81-4a44-87d9-709a32d24f6f", "9f465f08-d72e-4dc3-8029-d79ebd317767", "Admin", "ADMIN" });
+                values: new object[] { "d762988b-703b-42bc-ab0b-332cdfb1810e", "f56838c1-bacd-4c35-b213-17de1a6b2a9b", "Member", "MEMBER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -225,6 +253,9 @@ namespace WebApp.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Residences");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

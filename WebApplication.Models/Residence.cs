@@ -12,6 +12,15 @@ namespace WebApp.Models
     {
         public int Id { get; set; }
         [Required]
+        public string? Neighborhood { get; set; }
+        [Required]
+        public string? City { get; set; }
+        [Required]
+        public string? Country { get; set; }
+        [Required]
+        public int ResidentCapacity { get; set; }
+
+        [Required]
         public int NumOfBeds { get; set; }
         [Required]
         public int NumOfBathrooms { get; set; }
