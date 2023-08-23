@@ -12,8 +12,8 @@ using WebApp.DataAccess.Data;
 namespace WebApp.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230817001756_NewMigration")]
-    partial class NewMigration
+    [Migration("20230819182752_FreshStartMigrations")]
+    partial class FreshStartMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,22 +53,22 @@ namespace WebApp.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d762988b-703b-42bc-ab0b-332cdfb1810e",
-                            ConcurrencyStamp = "f56838c1-bacd-4c35-b213-17de1a6b2a9b",
+                            Id = "1c4debcc-2280-4e2b-83d2-25a238f29afa",
+                            ConcurrencyStamp = "de969100-1294-40f0-94ab-368772505539",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "9e657ddc-942c-44e8-9d2a-2ae268f505e9",
-                            ConcurrencyStamp = "5237ef76-9a6a-43e1-8d9e-52fce639e905",
+                            Id = "3734a96b-a932-4034-bc76-78e16a6699d3",
+                            ConcurrencyStamp = "a3ed2f4c-9b4a-48d9-b97c-7103fab8b032",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "661a6a0e-9f8d-46d8-8345-49a65aee3df2",
-                            ConcurrencyStamp = "7c783b7a-92c9-4b12-9b01-f4c6c1201bd7",
+                            Id = "06108650-f078-450b-9f64-e7c554380d4c",
+                            ConcurrencyStamp = "13d03c21-9d82-4f8f-a190-7575ab8cf895",
                             Name = "Host",
                             NormalizedName = "HOST"
                         });
@@ -178,6 +178,30 @@ namespace WebApp.DataAccess.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("WebApp.Models.Reservation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("From")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ResidenceId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("To")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ResidenceId");
+
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("WebApp.Models.Residence", b =>
@@ -360,6 +384,22 @@ namespace WebApp.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebApp.Models.Reservation", b =>
+                {
+                    b.HasOne("WebApp.Models.Residence", "Residence")
+                        .WithMany("Reservations")
+                        .HasForeignKey("ResidenceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Residence");
+                });
+
+            modelBuilder.Entity("WebApp.Models.Residence", b =>
+                {
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

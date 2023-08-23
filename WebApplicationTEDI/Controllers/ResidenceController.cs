@@ -8,10 +8,10 @@ namespace WebAppTEDI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ResidencesController : ControllerBase
+    public class ResidenceController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ResidencesController(IUnitOfWork unitOfWork)
+        public ResidenceController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -57,7 +57,7 @@ namespace WebAppTEDI.Controllers
             //residence2.ImageURL = "KAPPP";
             //_unitOfWork.Residence.Add(residence2);
             //_unitOfWork.Save();
-           
+
             //Residence residence3 = new Residence();
             //residence3.NumOfBeds = 1;
             //residence3.City = "Patra";
@@ -77,6 +77,26 @@ namespace WebAppTEDI.Controllers
             //residence3.ImageURL = "KAPPP";
             //_unitOfWork.Residence.Add(residence3);
             //_unitOfWork.Save();
+
+            Residence residence4 = new Residence();
+            residence4.NumOfBeds = 1;
+            residence4.City = "Ioannina";
+            residence4.Country = "Greece";
+            residence4.ResidentCapacity = 3;
+            residence4.Neighborhood = "Agia";
+            residence4.NumOfBathrooms = 1;
+            residence4.NumOfBedrooms = 2;
+            residence4.ResidenceType = "Treehouse";
+            residence4.LivingRoom = false;
+            residence4.SquareMeters = 100;
+            residence4.Description = "Description";
+            residence4.Smoking = false;
+            residence4.Pets = true;
+            residence4.Events = true;
+            residence4.MinDaysForReservation = 1;
+            residence4.ImageURL = "KAPPP";
+            _unitOfWork.Residence.Add(residence4);
+            _unitOfWork.Save();
 
             return _unitOfWork.Residence.GetAll().ToList();
         }

@@ -16,8 +16,10 @@ namespace WebApp.DataAccess.Repository
         {
             _db = db;
             Residence = new ResidenceRepository(_db);
+            Reservation = new ReservationRepository(_db);
         }
         public IResidenceRepository Residence { get; private set; }
+        public IReservationRepository Reservation { get; private set; }
 
         public void Save()
         {

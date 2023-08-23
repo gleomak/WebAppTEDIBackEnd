@@ -18,6 +18,7 @@ namespace WebApp.DataAccess.Data
 
         }
         public DbSet<Residence> Residences { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

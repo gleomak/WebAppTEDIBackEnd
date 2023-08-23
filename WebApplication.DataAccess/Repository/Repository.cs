@@ -39,7 +39,7 @@ namespace WebApp.DataAccess.Repository
                     query = query.Include(property);
                 }
             }
-            return query.ToList();
+            return GetPagination(query, 3, 1);
         }
 
         public T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = true)
@@ -63,6 +63,12 @@ namespace WebApp.DataAccess.Repository
             }
             return query.FirstOrDefault();
         }
+
+        public IEnumerable<T> GetPagination(IQueryable<T> query, int pageSize, int pageNumber) { 
+            return query.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList();  
+
+        }
+
 
         public void Remove(T entity)
         {

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApp.DataAccess.Migrations
 {
-    public partial class NewMigration : Migration
+    public partial class FreshStartMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -182,20 +182,41 @@ namespace WebApp.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "661a6a0e-9f8d-46d8-8345-49a65aee3df2", "7c783b7a-92c9-4b12-9b01-f4c6c1201bd7", "Host", "HOST" });
+            migrationBuilder.CreateTable(
+                name: "Reservations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ResidenceId = table.Column<int>(type: "int", nullable: false),
+                    From = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    To = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reservations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reservations_Residences_ResidenceId",
+                        column: x => x.ResidenceId,
+                        principalTable: "Residences",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "9e657ddc-942c-44e8-9d2a-2ae268f505e9", "5237ef76-9a6a-43e1-8d9e-52fce639e905", "Admin", "ADMIN" });
+                values: new object[] { "06108650-f078-450b-9f64-e7c554380d4c", "13d03c21-9d82-4f8f-a190-7575ab8cf895", "Host", "HOST" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "d762988b-703b-42bc-ab0b-332cdfb1810e", "f56838c1-bacd-4c35-b213-17de1a6b2a9b", "Member", "MEMBER" });
+                values: new object[] { "1c4debcc-2280-4e2b-83d2-25a238f29afa", "de969100-1294-40f0-94ab-368772505539", "Member", "MEMBER" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "3734a96b-a932-4034-bc76-78e16a6699d3", "a3ed2f4c-9b4a-48d9-b97c-7103fab8b032", "Admin", "ADMIN" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -235,6 +256,11 @@ namespace WebApp.DataAccess.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservations_ResidenceId",
+                table: "Reservations",
+                column: "ResidenceId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -255,13 +281,16 @@ namespace WebApp.DataAccess.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Residences");
+                name: "Reservations");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Residences");
         }
     }
 }

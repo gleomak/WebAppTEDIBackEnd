@@ -44,6 +44,9 @@ namespace WebApp.Models
         public int MinDaysForReservation { get; set; }
         [ValidateNever]
         public string? ImageURL { get; set; }
+        
+        public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+
 
     }
 }
