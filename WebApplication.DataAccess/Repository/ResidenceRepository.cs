@@ -55,13 +55,19 @@ namespace WebApp.DataAccess.Repository
                 residences = residences.Where(x => x.Country == residenceSearch.country);
             if (residenceSearch.numOfPeople.HasValue)
                 residences = residences.Where(x => x.ResidentCapacity >= residenceSearch.numOfPeople);
-            
-            IQueryable<Reservation> NotAvailableReservations = _db.Reservations.AsQueryable();
-            NotAvailableReservations = NotAvailableReservations.Where(x => residenceSearch.From >= x.From && residenceSearch.From <= x.To || residenceSearch.To >= x.From && residenceSearch.To <= x.To);
-            IEnumerable<Reservation> nReservations = NotAvailableReservations.ToList();
-            foreach(Reservation reservation in nReservations)
+
+            if (residenceSearch.From.HasValue)
             {
-                residences = residences.Where(x => x.Id != reservation.ResidenceId);
+                IQueryable<Reservation> NotAvailableReservations = _db.Reservations.AsQueryable();
+                NotAvailableReservations = NotAvailableReservations.Where(x => 
+                           residenceSearch.From >= x.From && residenceSearch.From <= x.To 
+                        || residenceSearch.To >= x.From && residenceSearch.To <= x.To 
+                        || residenceSearch.From <= x.From && residenceSearch.To >= x.To);
+                IEnumerable<Reservation> nReservations = NotAvailableReservations.ToList();
+                foreach (Reservation reservation in nReservations)
+                {
+                    residences = residences.Where(x => x.Id != reservation.ResidenceId);
+                }
             }
            
             return GetPagination(residences, residenceSearch.PageSize , residenceSearch.pageNumber);

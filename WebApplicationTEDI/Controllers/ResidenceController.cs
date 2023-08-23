@@ -17,7 +17,7 @@ namespace WebAppTEDI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Residence>>> GetResidence() {
+        public async Task<ActionResult<List<Residence>>> GetResidence([FromQuery] ResidenceSearch residenceSearch) {
             //Residence residence = new Residence();
             //residence.NumOfBeds = 1;
             //residence.City = "Athens";
@@ -78,27 +78,28 @@ namespace WebAppTEDI.Controllers
             //_unitOfWork.Residence.Add(residence3);
             //_unitOfWork.Save();
 
-            Residence residence4 = new Residence();
-            residence4.NumOfBeds = 1;
-            residence4.City = "Ioannina";
-            residence4.Country = "Greece";
-            residence4.ResidentCapacity = 3;
-            residence4.Neighborhood = "Agia";
-            residence4.NumOfBathrooms = 1;
-            residence4.NumOfBedrooms = 2;
-            residence4.ResidenceType = "Treehouse";
-            residence4.LivingRoom = false;
-            residence4.SquareMeters = 100;
-            residence4.Description = "Description";
-            residence4.Smoking = false;
-            residence4.Pets = true;
-            residence4.Events = true;
-            residence4.MinDaysForReservation = 1;
-            residence4.ImageURL = "KAPPP";
-            _unitOfWork.Residence.Add(residence4);
-            _unitOfWork.Save();
+            //Residence residence4 = new Residence();
+            //residence4.NumOfBeds = 1;
+            //residence4.City = "Ioannina";
+            //residence4.Country = "Greece";
+            //residence4.ResidentCapacity = 3;
+            //residence4.Neighborhood = "Agia";
+            //residence4.NumOfBathrooms = 1;
+            //residence4.NumOfBedrooms = 2;
+            //residence4.ResidenceType = "Treehouse";
+            //residence4.LivingRoom = false;
+            //residence4.SquareMeters = 100;
+            //residence4.Description = "Description";
+            //residence4.Smoking = false;
+            //residence4.Pets = true;
+            //residence4.Events = true;
+            //residence4.MinDaysForReservation = 1;
+            //residence4.ImageURL = "KAPPP";
+            //_unitOfWork.Residence.Add(residence4);
+            //_unitOfWork.Save();
 
-            return _unitOfWork.Residence.GetAll().ToList();
+            return _unitOfWork.Residence.GetAllSearch(residenceSearch).ToList();
+            //return _unitOfWork.Residence.GetAll().ToList();
         }
         [HttpGet("{id}")]
         public  ActionResult<Residence> FindResidence(int id)
