@@ -55,6 +55,16 @@ namespace WebApp.DataAccess.Repository
                 residences = residences.Where(x => x.Country == residenceSearch.country);
             if (residenceSearch.numOfPeople.HasValue)
                 residences = residences.Where(x => x.ResidentCapacity >= residenceSearch.numOfPeople);
+            if (residenceSearch.Internet.HasValue)
+                residences = residences.Where(x => x.Internet == residenceSearch.Internet);
+            if (residenceSearch.Tv.HasValue)
+                residences = residences.Where(x => x.Tv == residenceSearch.Tv);
+            if (residenceSearch.Aircondition.HasValue)
+                residences = residences.Where(x => x.Aircondition == residenceSearch.Aircondition);
+            if (residenceSearch.Kitchen.HasValue)
+                residences = residences.Where(x => x.Kitchen == residenceSearch.Kitchen);
+            if (residenceSearch.ParkingSpot.HasValue)
+                residences = residences.Where(x => x.ParkingSpot == residenceSearch.ParkingSpot);
 
             if (residenceSearch.From.HasValue)
             {

@@ -33,6 +33,11 @@ namespace WebAppTEDI.Controllers
             //residence.Smoking = false;
             //residence.Pets = true;
             //residence.Events = true;
+            //residence.Internet = false;
+            //residence.Aircondition = true;
+            //residence.Kitchen = true;
+            //residence.ParkingSpot = true;
+            //residence.Tv = false;
             //residence.MinDaysForReservation = 3;
             //residence.ImageURL = "KAPPP";
             //_unitOfWork.Residence.Add(residence);
@@ -53,6 +58,11 @@ namespace WebAppTEDI.Controllers
             //residence2.Smoking = false;
             //residence2.Pets = true;
             //residence2.Events = true;
+            //residence2.Internet = false;
+            //residence2.Aircondition = true;
+            //residence2.Kitchen = true;
+            //residence2.ParkingSpot = true;
+            //residence2.Tv = false;
             //residence2.MinDaysForReservation = 4;
             //residence2.ImageURL = "KAPPP";
             //_unitOfWork.Residence.Add(residence2);
@@ -73,6 +83,11 @@ namespace WebAppTEDI.Controllers
             //residence3.Smoking = false;
             //residence3.Pets = true;
             //residence3.Events = true;
+            //residence3.Internet = false;
+            //residence3.Aircondition = true;
+            //residence3.Kitchen = true;
+            //residence3.ParkingSpot = true;
+            //residence3.Tv = false;
             //residence3.MinDaysForReservation = 1;
             //residence3.ImageURL = "KAPPP";
             //_unitOfWork.Residence.Add(residence3);
@@ -93,6 +108,11 @@ namespace WebAppTEDI.Controllers
             //residence4.Smoking = false;
             //residence4.Pets = true;
             //residence4.Events = true;
+            //residence4.Internet = false;
+            //residence4.Aircondition = true;
+            //residence4.Kitchen = true;
+            //residence4.ParkingSpot = true;
+            //residence4.Tv = false;
             //residence4.MinDaysForReservation = 1;
             //residence4.ImageURL = "KAPPP";
             //_unitOfWork.Residence.Add(residence4);

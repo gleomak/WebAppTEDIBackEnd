@@ -41,11 +41,23 @@ namespace WebApp.Models
         [Required]
         public bool Events { get; set; }
         [Required]
+        public bool Internet { get; set; }
+        [Required]
+        public bool Aircondition { get; set; }
+        [Required]
+        public bool Kitchen { get; set; }
+        [Required]
+        public bool ParkingSpot { get; set; }
+        [Required]
+        public bool Tv { get; set; }
+
+        [Required]
         public int MinDaysForReservation { get; set; }
+        [Required]
+        public int CostPerNight { get; set; }
         [ValidateNever]
         public string? ImageURL { get; set; }
         
-        public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
 
     }
