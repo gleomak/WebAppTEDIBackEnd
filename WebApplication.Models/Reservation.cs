@@ -14,6 +14,5 @@ namespace WebApp.Models
         public Residence Residence { get; set; } = null!;
         public DateTime From { get; set; }
         public DateTime To { get; set; }
-
     }
 }

@@ -10,6 +10,8 @@ namespace WebApp.DataAccess.Repository.IRepository
     {
         IResidenceRepository Residence{ get; }
         IReservationRepository Reservation { get; }
+        ILandlordReviewsRepository LandlordReviews { get; }
+        IResidenceReviewsRepository ResidenceReviews { get; }
         void Save();
     }
 }

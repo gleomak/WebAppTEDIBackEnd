@@ -14,6 +14,8 @@ namespace WebApp.Models
         [Required]
         public string? Neighborhood { get; set; }
         [Required]
+        public string? Title { get; set; }
+        [Required]
         public string? City { get; set; }
         [Required]
         public string? Country { get; set; }
@@ -57,6 +59,12 @@ namespace WebApp.Models
         public int CostPerNight { get; set; }
         [ValidateNever]
         public string? ImageURL { get; set; }
+        [Required]
+        public double Latitude { get; set; }
+        [Required]
+        public double Longitude { get; set; }
+        [Required]
+        public string? Address { get; set; }
         
 
 
