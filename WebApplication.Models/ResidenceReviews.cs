@@ -19,8 +19,7 @@ namespace WebApp.Models
         public int ResidenceId { get; set; }
         public Residence Residence { get; set; } = null!;
 
-        //public int UserId { get; set; }
-        //public User User { get; set; } = null!;
+        public int ReviewerId { get; set; }
 
     }
 }
