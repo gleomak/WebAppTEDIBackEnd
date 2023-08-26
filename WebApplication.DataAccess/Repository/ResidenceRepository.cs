@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,7 +45,7 @@ namespace WebApp.DataAccess.Repository
             }
         }
 
-        public IEnumerable<Residence>  GetAllSearch(ResidenceSearch residenceSearch)
+        public IQueryable<Residence>  GetAllSearch(ResidenceSearch residenceSearch)
         {
             IQueryable<Residence> residences = _db.Residences.AsQueryable();
             if (!string.IsNullOrEmpty(residenceSearch.neighborhood))
@@ -79,8 +80,8 @@ namespace WebApp.DataAccess.Repository
                     residences = residences.Where(x => x.Id != reservation.ResidenceId);
                 }
             }
-           
-            return GetPagination(residences, residenceSearch.PageSize , residenceSearch.pageNumber);
+            return residences;
+            //return await GetPagination(residences, residenceSearch.PageSize , residenceSearch.pageNumber);
         }
     }
 }

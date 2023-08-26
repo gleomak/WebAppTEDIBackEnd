@@ -12,6 +12,6 @@ namespace WebApp.DataAccess.Repository.IRepository
     {
         void Update(Residence obj);
 
-        IEnumerable<Residence> GetAllSearch(ResidenceSearch residenceSearch);
+        IQueryable<Residence> GetAllSearch(ResidenceSearch residenceSearch);
     }
 }

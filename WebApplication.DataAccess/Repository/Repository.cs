@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApp.DataAccess.Data;
 using WebApp.DataAccess.Repository.IRepository;
+using WebApp.Models;
 
 namespace WebApp.DataAccess.Repository
 {
@@ -39,7 +40,8 @@ namespace WebApp.DataAccess.Repository
                     query = query.Include(property);
                 }
             }
-            return GetPagination(query, 3, 1);
+            return query.ToList();
+            //return GetPagination(query, 3, 1);
         }
 
         public T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = true)
@@ -64,8 +66,12 @@ namespace WebApp.DataAccess.Repository
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetPagination(IQueryable<T> query, int pageSize, int pageNumber) { 
-            return query.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList();  
+        public async Task<IEnumerable<T>> GetPagination(IQueryable<T> query, int pageSize, int pageNumber) {
+            var count = await query.CountAsync();
+            var items = await query.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToListAsync();
+
+            return items;
+            //return new PagedList<T>(items, count, pageNumber, pageSize);
 
         }
 
