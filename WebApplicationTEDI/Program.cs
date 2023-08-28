@@ -10,6 +10,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using WebAppTEDI.Middleware;
+using Microsoft.OpenApi.Writers;
+using static System.Formats.Asn1.AsnWriter;
+using WebApp.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -91,7 +94,14 @@ app.UseCors(opt =>
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
+
+
+
+var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+
+await DbInitializer.Initialize(context, userManager);
 
 app.Run();
