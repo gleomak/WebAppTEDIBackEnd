@@ -13,6 +13,7 @@ using WebAppTEDI.Middleware;
 using Microsoft.OpenApi.Writers;
 using static System.Formats.Asn1.AsnWriter;
 using WebApp.DataAccess;
+using WebApp.Models.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +48,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddAutoMapper(typeof(MappingProfiles));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddCors();
 builder.Services.AddIdentityCore<User>()
@@ -68,6 +70,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<ImageService>();
 
 
 var app = builder.Build();

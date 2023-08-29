@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,15 @@ namespace WebAppTEDI.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly TokenService _tokenService;
+        private readonly IMapper _mapper;
+        private readonly ImageService _imageService;
 
-        public AccountController(UserManager<User> userManager, TokenService tokenService)
+        public AccountController(UserManager<User> userManager, TokenService tokenService, IMapper mapper, ImageService imageService)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _mapper = mapper;
+            _imageService = imageService;
         }
 
         [HttpPost("login")]
@@ -35,9 +40,26 @@ namespace WebAppTEDI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult> Register(RegisterDTO registerDTO)
+        public async Task<ActionResult> Register([FromForm]RegisterDTO registerDTO)
         {
-            var user = new User { UserName = registerDTO.Username, Email = registerDTO.Email };
+            var user = new User {
+                UserName = registerDTO.Username,
+                Email = registerDTO.Email,
+                FirstName = registerDTO.FirstName,
+                LastName = registerDTO.LastName,
+                PhoneNumber = registerDTO.PhoneNumber,
+                StreetAddress = registerDTO.StreetAddress,
+
+            };
+            //var user = _mapper.Map<User>(registerDTO);
+            if (registerDTO.File != null)
+            {
+                var imageResult =  await _imageService.AddImageAsync(registerDTO.File);
+                if(imageResult.Error != null)
+                    return BadRequest(new ProblemDetails { Title = imageResult.Error.Message });
+                user.PictureURL = imageResult?.SecureUrl.ToString();
+                user.PublicId = imageResult?.PublicId;
+            }
 
             var result = await _userManager.CreateAsync(user, registerDTO.Password);
             if (!result.Succeeded)

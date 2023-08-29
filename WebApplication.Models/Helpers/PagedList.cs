@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebApp.Models
+namespace WebApp.Models.Helpers
 {
     public class PagedList<T> : List<T>
     {

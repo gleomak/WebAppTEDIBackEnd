@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace WebApp.Models
+namespace WebApp.Models.Helpers
 {
     public static class HttpExtensions
     {
