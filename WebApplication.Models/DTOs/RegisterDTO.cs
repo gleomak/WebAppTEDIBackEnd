@@ -22,6 +22,9 @@ namespace WebApp.Models.DTOs
         [Required]
         public string? PhoneNumber { get; set; }
 
+        [Required]  
+        public string? Role { get; set; }
+
         public IFormFile? File { get; set; }
 
     }
