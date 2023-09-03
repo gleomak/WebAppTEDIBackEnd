@@ -102,9 +102,10 @@ app.MapControllers();
 
 
 var scope = app.Services.CreateScope();
+var unitOfWork = scope.ServiceProvider.GetService<UnitOfWork>();
 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
-await DbInitializer.Initialize(context, userManager);
+await DbInitializer.Initialize(context, userManager, unitOfWork);
 
 app.Run();
