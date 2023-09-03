@@ -19,7 +19,7 @@ namespace WebAppTEDI.Controllers
 
         [HttpGet]
         public async Task<ActionResult<PagedList<Residence>>> GetResidence([FromQuery] ResidenceSearch residenceSearch) {
-            
+
             var residences = _unitOfWork.Residence.GetAllSearch(residenceSearch);
             var residencesM = await PagedList<Residence>.ToPagedList(residences, residenceSearch.pageNumber, residenceSearch.PageSize);
             Response.AddPaginationHeader(residencesM.Metadata);
