@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,17 @@ namespace WebApp.DataAccess.Repository
         public ReservationRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
+        }
+
+        public IEnumerable<Reservation> ReservationsWithId(string id)
+        {
+            int resID = Int32.Parse(id);
+
+            IQueryable<Reservation> reservations = _db.Reservations.AsQueryable();
+
+            reservations = reservations.Where(x => x.ResidenceId == resID);
+
+            return reservations.ToList();
         }
 
     }

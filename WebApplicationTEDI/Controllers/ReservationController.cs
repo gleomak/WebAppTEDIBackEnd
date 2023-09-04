@@ -35,6 +35,14 @@ namespace WebAppTEDI.Controllers
             _unitOfWork.Save();
 
         }
+
+        [HttpGet ("getReservationsForResidence")]
+        public ActionResult<List<Reservation>> ResidenceRerervationGet([FromQuery]string ResidenceId)
+        {
+            IEnumerable<Reservation> reservations = _unitOfWork.Reservation.ReservationsWithId(ResidenceId);
+
+            return reservations.ToList();
+        }
         
     }
 }

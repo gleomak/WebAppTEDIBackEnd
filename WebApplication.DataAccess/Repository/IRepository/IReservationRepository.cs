@@ -10,6 +10,6 @@ namespace WebApp.DataAccess.Repository.IRepository
 {
     public interface IReservationRepository : IRepository<Reservation>
     {
-
+        IEnumerable<Reservation> ReservationsWithId(string id);
     }
 }
