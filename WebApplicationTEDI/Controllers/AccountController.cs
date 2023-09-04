@@ -48,6 +48,7 @@ namespace WebAppTEDI.Controllers
                 StreetAddress = user.StreetAddress,
                 PhoneNumber = user.PhoneNumber,
                 PictureURL = user.PictureURL,
+                RoleAuthorized = user.RoleAuthorized,
                 Token = await _tokenService.GenerateToken(user),
             };
         }
@@ -63,7 +64,7 @@ namespace WebAppTEDI.Controllers
                 LastName = registerDTO.LastName,
                 PhoneNumber = registerDTO.PhoneNumber,
                 StreetAddress = registerDTO.StreetAddress,
-
+                RoleAuthorized = registerDTO.Role.Equals("Member") ? true : false,
             };
             //var user = _mapper.Map<User>(registerDTO);
             if (registerDTO.File != null)
@@ -90,7 +91,6 @@ namespace WebAppTEDI.Controllers
             } else if (registerDTO.Role.Equals("Member"))
             {
                 await _userManager.AddToRoleAsync(user, "Member");
-
             } else
             {
                 await _userManager.AddToRolesAsync(user, new[] { "Member", "Host" });
@@ -113,6 +113,7 @@ namespace WebAppTEDI.Controllers
                 StreetAddress = user.StreetAddress,
                 PhoneNumber = user.PhoneNumber,
                 PictureURL = user.PictureURL,
+                RoleAuthorized = user.RoleAuthorized,
                 Token = await _tokenService.GenerateToken(user),
             };
         }
@@ -134,14 +135,6 @@ namespace WebAppTEDI.Controllers
             {
                 return NotFound();
             }
-
-            //foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(updateUser))
-            //{
-            //    string name = descriptor.Name;
-            //    object value = descriptor.GetValue(updateUser);
-            //    Console.WriteLine("{0}={1}", name, value);
-            //}
-
             user.FirstName = updateUser.FirstName;
             user.LastName = updateUser.LastName;
             user.StreetAddress = updateUser.StreetAddress;
@@ -188,16 +181,26 @@ namespace WebAppTEDI.Controllers
                 UserDTO userDTO = _mapper.Map<UserDTO>(user);
                 var roles = await _userManager.GetRolesAsync(user);
                 userDTO.Roles = new List<string>(roles);
-                //foreach(var role in roles)
-                //{
-                //    Console.WriteLine(role);
-                //    userDTO.Roles.Append(role);
-                //}
                 userDTOList.Add(userDTO);
             }
             var userDTOListPaged = new PagedList<UserDTO>(userDTOList, userListPaged.Metadata.TotalCount, userListPaged.Metadata.CurrentPage, userListPaged.Metadata.PageSize);
+            Response.AddPaginationHeader(userDTOListPaged.Metadata);
             return userDTOListPaged;
         }
+
+        [HttpPost("authorizeUser")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> AuthorizeUser([FromForm] string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+
+            Console.WriteLine(user.UserName + " is " + user.RoleAuthorized);
+
+            user.RoleAuthorized = true; 
+            _unitOfWork.Save();
+            return StatusCode(201); 
+        } 
+
     }
 
     

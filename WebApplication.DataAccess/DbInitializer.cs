@@ -23,21 +23,39 @@ namespace WebApp.DataAccess
                     FirstName = "Bobber",
                     LastName = "Bobbings",
                     StreetAddress = "Bob 2",
-                    PhoneNumber = "697342472"
-
+                    PhoneNumber = "697342472",
+                    RoleAuthorized = true,
                 };
                 await userManager.CreateAsync(user, "Pa$$w0rd");
                 await userManager.AddToRoleAsync(user, "Member");
+
                 var admin = new User
                 {
                     UserName = "Admin",
                     FirstName = "Admin",
                     LastName = "Adminakis",
+                    PhoneNumber = "696969696",
                     StreetAddress = "Adminaki 3",
-                    Email = "admin@test.com"
+                    Email = "admin@test.com",
+                    RoleAuthorized = true
+                
                 };
                 await userManager.CreateAsync(admin, "Pa$$w0rd");
-                await userManager.AddToRolesAsync(admin, new[] {"Member", "Admin"});
+                await userManager.AddToRolesAsync(admin, new[] { "Member", "Admin" });
+
+                var host = new User
+                {
+                    UserName = "Host",
+                    Email = "host@test.com",
+                    FirstName = "Hosterer",
+                    LastName = "Hostings",
+                    StreetAddress = "Host 2",
+                    PhoneNumber = "692345432",
+                    RoleAuthorized = false,
+                   
+                };
+                await userManager.CreateAsync(host, "Pa$$w0rd");
+                await userManager.AddToRoleAsync(host, "Host");
             }
 
             if (db.Residences.Any()) return;

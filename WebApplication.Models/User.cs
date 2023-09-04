@@ -20,5 +20,6 @@ namespace WebApp.Models
         public string? PictureURL { get; set; }
 
         public string? PublicId { get; set; }
+        public bool RoleAuthorized { get; set; }
     }
 }
