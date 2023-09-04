@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using WebApp.DataAccess.Repository.IRepository;
 using WebApp.Models;
 using WebApp.Models.DTOs;
+using WebApp.Models.Helpers;
 using WebApp.Services;
 
 namespace WebAppTEDI.Controllers
@@ -38,6 +40,7 @@ namespace WebAppTEDI.Controllers
                 return Unauthorized();
             }
             return new UserDTO {
+                Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Username = user.UserName,
@@ -102,6 +105,7 @@ namespace WebAppTEDI.Controllers
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             return new UserDTO
             {
+                Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Username = user.UserName,
@@ -171,5 +175,31 @@ namespace WebAppTEDI.Controllers
             _unitOfWork.Save();
             return StatusCode(201);
         }
+
+        [HttpGet("retrieveUserList")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<PagedList<UserDTO>>> GetUsers([FromQuery] PaginationParams paginationParams)
+        {
+            var userIQ =  _userManager.Users;
+            var userListPaged = await PagedList<User>.ToPagedList(userIQ, paginationParams.pageNumber, paginationParams.PageSize);
+            List<UserDTO> userDTOList = new List<UserDTO>();
+            foreach (var user in userListPaged)
+            {
+                UserDTO userDTO = _mapper.Map<UserDTO>(user);
+                var roles = await _userManager.GetRolesAsync(user);
+                userDTO.Roles = new List<string>(roles);
+                //foreach(var role in roles)
+                //{
+                //    Console.WriteLine(role);
+                //    userDTO.Roles.Append(role);
+                //}
+                userDTOList.Add(userDTO);
+            }
+            var userDTOListPaged = new PagedList<UserDTO>(userDTOList, userListPaged.Metadata.TotalCount, userListPaged.Metadata.CurrentPage, userListPaged.Metadata.PageSize);
+            return userDTOListPaged;
+        }
     }
+
+    
+
 }

@@ -12,6 +12,9 @@ namespace WebApp.Models.Helpers
     {
         public MappingProfiles() {
             CreateMap<RegisterDTO, User>();
+            CreateMap<User, UserDTO>();
+            CreateMap<ReservationDTO, Reservation>();
+
         }
     }
 }

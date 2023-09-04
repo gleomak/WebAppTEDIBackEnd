@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.DataAccess.Data;
 using WebApp.DataAccess.Repository.IRepository;
 using WebApp.Models;
 
@@ -14,30 +15,26 @@ namespace WebAppTEDI.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
-        public ReservationController(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> usermanager )
+        private readonly ApplicationDbContext   _context;
+        public ReservationController(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> usermanager, ApplicationDbContext context )
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = usermanager;
+            _context = context;
         }
 
 
-        [Authorize(Roles="Member")]
+        //[Authorize(Roles="Member")]
         [HttpPost ("postReservation")]
-        public async void ReservationSavePost([FromQuery]ReservationDTO reservationDTO)
+        public void ReservationSavePost([FromForm]ReservationDTO reservationDTO)
         {
             Reservation reservation=_mapper.Map<Reservation>(reservationDTO);
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-
-            Console.WriteLine(user.Id);
-
-            reservation.UserId = user.Id;
-
+            
             _unitOfWork.Reservation.Add(reservation);
             _unitOfWork.Save();
 
         }
-         
-
+        
     }
 }
