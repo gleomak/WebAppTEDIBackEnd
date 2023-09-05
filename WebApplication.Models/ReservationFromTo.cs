@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebApp.Models
 {
-    public class UserWithRoles
+    public class ReservationFromTo
     {
-
+        public string? From { get; set; }
+        public string? To { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace WebApp.Models.Helpers
             CreateMap<RegisterDTO, User>();
             CreateMap<User, UserDTO>();
             CreateMap<ReservationDTO, Reservation>();
+            CreateMap<Residence, ResidenceDTO>();
 
         }
     }

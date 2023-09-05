@@ -66,7 +66,7 @@ namespace WebApp.Models
         [Required]
         public string? Address { get; set; }
         
-
+        public ICollection<Reservation> Reservations { get;} = new List<Reservation>(); 
 
     }
 }
