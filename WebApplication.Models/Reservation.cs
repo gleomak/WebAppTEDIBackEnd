@@ -15,9 +15,7 @@ namespace WebApp.Models
         public Residence Residence { get; set; } = null!;
         public DateTime From { get; set; }
         public DateTime To { get; set; }
-        public string? UserId { get; set; }
-        [ForeignKey("UserId")]
-        [ValidateNever]
-        public User User { get; set; } = null!;
+
+        public string? StayingMemberUsername { get; set; }
     }
 }

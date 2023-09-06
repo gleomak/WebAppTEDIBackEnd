@@ -11,6 +11,6 @@ namespace WebApp.Models
         public int ResidenceId { get; set; }
         public DateTime From { get; set; } 
         public DateTime To { get; set; }
-        public string UserId { get; set; }
+        public string? StayingMemberUsername { get; set; }
     }
 }

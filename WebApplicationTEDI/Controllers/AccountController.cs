@@ -21,7 +21,7 @@ namespace WebAppTEDI.Controllers
         private readonly TokenService _tokenService;
         private readonly IMapper _mapper;
         private readonly ImageService _imageService;
-        private readonly IUnitOfWork _unitOfWork;    
+        private readonly IUnitOfWork _unitOfWork;
 
         public AccountController(UserManager<User> userManager, TokenService tokenService, IMapper mapper, ImageService imageService, IUnitOfWork unitOfWork)
         {
@@ -36,7 +36,7 @@ namespace WebAppTEDI.Controllers
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
         {
             User user = await _userManager.FindByNameAsync(loginDTO.Username);
-            if(user == null || !await _userManager.CheckPasswordAsync(user, loginDTO.Password)){
+            if (user == null || !await _userManager.CheckPasswordAsync(user, loginDTO.Password)) {
                 return Unauthorized();
             }
             return new UserDTO {
@@ -55,7 +55,7 @@ namespace WebAppTEDI.Controllers
 
         [HttpPost("register")]
         //[ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register([FromForm]RegisterDTO registerDTO)
+        public async Task<ActionResult> Register([FromForm] RegisterDTO registerDTO)
         {
             var user = new User {
                 UserName = registerDTO.Username,
@@ -69,13 +69,13 @@ namespace WebAppTEDI.Controllers
             //var user = _mapper.Map<User>(registerDTO);
             if (registerDTO.File != null)
             {
-                var imageResult =  await _imageService.AddImageAsync(registerDTO.File);
-                if(imageResult.Error != null)
+                var imageResult = await _imageService.AddImageAsync(registerDTO.File);
+                if (imageResult.Error != null)
                     return BadRequest(new ProblemDetails { Title = imageResult.Error.Message });
                 user.PictureURL = imageResult?.SecureUrl.ToString();
                 user.PublicId = imageResult?.PublicId;
             }
-           
+
             var result = await _userManager.CreateAsync(user, registerDTO.Password);
             if (!result.Succeeded)
             {
@@ -128,10 +128,10 @@ namespace WebAppTEDI.Controllers
 
         [Authorize]
         [HttpPost("editUserProfile")]
-        public async Task<ActionResult> EditUserProfile([FromForm]UpdateUserDTO updateUser)
+        public async Task<ActionResult> EditUserProfile([FromForm] UpdateUserDTO updateUser)
         {
             var user = await _userManager.FindByNameAsync(updateUser.Username);
-            if(user == null)
+            if (user == null)
             {
                 return NotFound();
             }
@@ -142,7 +142,7 @@ namespace WebAppTEDI.Controllers
             if (!string.IsNullOrEmpty(updateUser.NewPassword))
             {
                 var result = await _userManager.ChangePasswordAsync(user, updateUser.Password, updateUser.NewPassword);
-                if(!result.Succeeded)
+                if (!result.Succeeded)
                 {
                     foreach (var error in result.Errors)
                     {
@@ -173,7 +173,7 @@ namespace WebAppTEDI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<PagedList<UserDTO>>> GetUsers([FromQuery] PaginationParams paginationParams)
         {
-            var userIQ =  _userManager.Users;
+            var userIQ = _userManager.Users;
             var userListPaged = await PagedList<User>.ToPagedList(userIQ, paginationParams.pageNumber, paginationParams.PageSize);
             List<UserDTO> userDTOList = new List<UserDTO>();
             foreach (var user in userListPaged)
@@ -196,10 +196,20 @@ namespace WebAppTEDI.Controllers
 
             Console.WriteLine(user.UserName + " is " + user.RoleAuthorized);
 
-            user.RoleAuthorized = true; 
+            user.RoleAuthorized = true;
             _unitOfWork.Save();
-            return StatusCode(201); 
-        } 
+            return StatusCode(201);
+        }
+
+        [HttpGet("getHostResidences")]
+        [Authorize(Roles = "Host")]
+        public async Task<ActionResult<PagedList<Residence>>> getHostResidences([FromQuery]PaginationParams pagination)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var residences = _unitOfWork.Residence.UserResidences(user.Id);
+            var pagedResidences = await PagedList<Residence>.ToPagedList(residences, pagination.pageNumber, pagination.PageSize);
+            return Ok(pagedResidences);
+        }
 
     }
 

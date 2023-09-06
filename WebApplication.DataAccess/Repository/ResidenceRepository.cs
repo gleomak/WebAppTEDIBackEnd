@@ -83,5 +83,12 @@ namespace WebApp.DataAccess.Repository
             return residences;
             //return await GetPagination(residences, residenceSearch.PageSize , residenceSearch.pageNumber);
         }
+
+        public IQueryable<Residence> UserResidences(string UserID)
+        {
+            IQueryable<Residence> residences = _db.Residences.AsQueryable();
+            residences = residences.Where(x => x.UserId == UserID);
+            return residences;
+        }
     }
 }
