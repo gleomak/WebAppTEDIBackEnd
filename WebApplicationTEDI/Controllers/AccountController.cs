@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.ComponentModel;
 using WebApp.DataAccess.Repository.IRepository;
 using WebApp.Models;
@@ -203,12 +204,38 @@ namespace WebAppTEDI.Controllers
 
         [HttpGet("getHostResidences")]
         [Authorize(Roles = "Host")]
-        public async Task<ActionResult<PagedList<Residence>>> getHostResidences([FromQuery]PaginationParams pagination)
+        public async Task<ActionResult<PagedList<ResidenceDTO>>> getHostResidences([FromQuery]PaginationParams pagination)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var residences = _unitOfWork.Residence.UserResidences(user.Id);
             var pagedResidences = await PagedList<Residence>.ToPagedList(residences, pagination.pageNumber, pagination.PageSize);
-            return Ok(pagedResidences);
+            List<ResidenceDTO> list = new List<ResidenceDTO>();
+
+            foreach (var res in pagedResidences)
+            {
+                ResidenceDTO residenceDTO = _mapper.Map<ResidenceDTO>(res);
+                var reservations = _unitOfWork.Reservation.GetAll(x => x.ResidenceId == res.Id);
+
+                foreach (var r in reservations)
+                {
+                    ReservationFromTo reservationFromTo = new ReservationFromTo();
+                    reservationFromTo.From = r.From.ToString();
+                    reservationFromTo.To = r.To.ToString();
+                    residenceDTO.ReservationFromTo.Add(reservationFromTo);
+                }
+                var pictures = _unitOfWork.Image.GetAll(x => x.ResidenceId == res.Id).ToList();
+                if (pictures != null)
+                {
+                    foreach (var p in pictures)
+                    {
+                        residenceDTO.ImageURL.Add(p.URL);
+                    }
+                    list.Add(residenceDTO);
+                }
+            }
+            var residencesDTOS = new PagedList<ResidenceDTO>(list, pagedResidences.Metadata.TotalCount, pagedResidences.Metadata.CurrentPage, pagedResidences.Metadata.PageSize);
+            Response.AddPaginationHeader(residencesDTOS.Metadata);
+            return residencesDTOS;
         }
 
     }

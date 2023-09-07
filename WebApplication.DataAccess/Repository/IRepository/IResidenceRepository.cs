@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebApp.Models;
+using WebApp.Models.DTOs;
+using WebApp.Models.Helpers;
 
 namespace WebApp.DataAccess.Repository.IRepository
 {
@@ -14,5 +16,7 @@ namespace WebApp.DataAccess.Repository.IRepository
 
         IQueryable<Residence> GetAllSearch(ResidenceSearch residenceSearch);
         IQueryable<Residence> UserResidences(string UserId);
+
+        //PagedList<ResidenceDTO> ResidenceToResidenceDTO (PagedList<Residence> residenceList);
     }
 }

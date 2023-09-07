@@ -43,7 +43,6 @@ namespace WebApp.Services
                 };
                 uploadResult = await cloudinary.UploadAsync(uploadParams);
             }
-
             return uploadResult;
         }
 

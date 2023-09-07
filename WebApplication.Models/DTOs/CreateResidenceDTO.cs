@@ -1,18 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebApp.Models
+namespace WebApp.Models.DTOs
 {
-    public class Residence
+    public class CreateResidenceDTO
     {
-        public int Id { get; set; }
-        [Required]
         public string? Neighborhood { get; set; }
         [Required]
         public string? Title { get; set; }
@@ -58,18 +56,14 @@ namespace WebApp.Models
         public int MinDaysForReservation { get; set; }
         [Required]
         public int CostPerNight { get; set; }
+        public List<IFormFile>? Files { get; set; }
         [Required]
         public double Latitude { get; set; }
         [Required]
         public double Longitude { get; set; }
         [Required]
         public string? Address { get; set; }
+        [Required]
         public string? UserId { get; set; }
-        [ForeignKey("UserId")]
-        public User User { get; set; } = null!;
-
-        public ICollection<Image> Images { get; } = new List<Image>();
-        public ICollection<Reservation> Reservations { get;} = new List<Reservation>(); 
-
     }
 }

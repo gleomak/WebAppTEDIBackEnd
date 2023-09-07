@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,8 @@ using System.Threading.Tasks;
 using WebApp.DataAccess.Data;
 using WebApp.DataAccess.Repository.IRepository;
 using WebApp.Models;
+using WebApp.Models.DTOs;
+using WebApp.Models.Helpers;
 
 namespace WebApp.DataAccess.Repository
 {
@@ -38,10 +41,6 @@ namespace WebApp.DataAccess.Repository
                 objFromDb.Pets = obj.Pets;
                 objFromDb.Events = obj.Events;
                 objFromDb.MinDaysForReservation = obj.MinDaysForReservation;
-                if (obj.ImageURL != null)
-                {
-                    objFromDb.ImageURL = obj.ImageURL;
-                }
             }
         }
 
@@ -90,5 +89,36 @@ namespace WebApp.DataAccess.Repository
             residences = residences.Where(x => x.UserId == UserID);
             return residences;
         }
+
+        //public PagedList<ResidenceDTO> ResidenceToResidenceDTO(PagedList<Residence> residencePagedList)
+        //{
+        //    List<ResidenceDTO> list = new List<ResidenceDTO>();
+        //    foreach (var res in residencePagedList)
+        //    {
+        //        ResidenceDTO residenceDTO = _mapper.Map<ResidenceDTO>(res);
+        //        var reservations = _db.Reservations.AsQueryable();
+        //        IEnumerable<Reservation> residenceReservations =  reservations.Where(x => x.ResidenceId == res.Id).ToList();  
+
+        //        foreach (var r in residenceReservations)
+        //        {
+        //            ReservationFromTo reservationFromTo = new ReservationFromTo();
+        //            reservationFromTo.From = r.From.ToString();
+        //            reservationFromTo.To = r.To.ToString();
+        //            residenceDTO.ReservationFromTo.Add(reservationFromTo);
+        //        }
+        //        var pictures = _db.Images.AsQueryable();
+        //        IEnumerable<Image> picturesOfResidence = pictures.Where(x => x.ResidenceId == res.Id).ToList();
+        //        if (pictures != null)
+        //        {
+        //            foreach (var p in pictures)
+        //            {
+        //                residenceDTO.ImageURL.Add(p.URL);
+        //            }
+        //            list.Add(residenceDTO);
+        //        }
+        //    }
+        //    var residencesDTOS = new PagedList<ResidenceDTO>(list, residencePagedList.Metadata.TotalCount, residencePagedList.Metadata.CurrentPage, residencePagedList.Metadata.PageSize);
+        //    return residencesDTOS;
+        //}
     }
 }

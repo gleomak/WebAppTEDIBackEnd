@@ -21,6 +21,7 @@ namespace WebApp.DataAccess.Data
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<LandlordReviews> LandlordReviews { get; set; }
         public DbSet<ResidenceReviews> ResidenceReviews { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

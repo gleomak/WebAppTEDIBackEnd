@@ -8,6 +8,7 @@ namespace WebApp.Models.DTOs
 {
     public class ResidenceDTO : Residence 
     {
+        public List<string> ImageURL { get; set; } = new List<string>();
         public List<ReservationFromTo> ReservationFromTo { get; set; } = new List<ReservationFromTo>();
     }
 }
