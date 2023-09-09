@@ -12,7 +12,7 @@ namespace WebApp.DataAccess.Repository.IRepository
 {
     public interface IResidenceRepository : IRepository<Residence>
     {
-        void Update(Residence obj);
+        Residence Update(UpdateResidenceDTO obj);
 
         IQueryable<Residence> GetAllSearch(ResidenceSearch residenceSearch);
         IQueryable<Residence> UserResidences(string UserId);

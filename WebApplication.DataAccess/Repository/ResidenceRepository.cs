@@ -22,15 +22,19 @@ namespace WebApp.DataAccess.Repository
             _db = db;
         }
 
-        public void Update(Residence obj)
+        public Residence Update(UpdateResidenceDTO obj)
         {
-            var objFromDb = _db.Residences.FirstOrDefault(u => u.Id == obj.Id);
+            var intID = int.Parse(obj.Id);
+            Console.WriteLine(intID.ToString());
+            var objFromDb = _db.Residences.FirstOrDefault(u => u.Id == intID);
             if (objFromDb != null)
             {
-                objFromDb.NumOfBeds = obj.NumOfBeds;
-                objFromDb.City  = obj.City; 
-                objFromDb.Country = obj.Country;    
+                objFromDb.Title = obj.Title;
+                objFromDb.City = obj.City;
+                objFromDb.Country = obj.Country;
                 objFromDb.Neighborhood = obj.Neighborhood;
+                objFromDb.ResidentCapacity = obj.ResidentCapacity;
+                objFromDb.NumOfBeds = obj.NumOfBeds;
                 objFromDb.Description = obj.Description;
                 objFromDb.NumOfBathrooms = obj.NumOfBathrooms;
                 objFromDb.ResidenceType = obj.ResidenceType;
@@ -40,8 +44,18 @@ namespace WebApp.DataAccess.Repository
                 objFromDb.Smoking = obj.Smoking;
                 objFromDb.Pets = obj.Pets;
                 objFromDb.Events = obj.Events;
+                objFromDb.Internet = obj.Internet;
+                objFromDb.Aircondition = obj.Aircondition;
+                objFromDb.Kitchen = obj.Kitchen;
+                objFromDb.ParkingSpot = obj.ParkingSpot;
+                objFromDb.Tv = obj.Tv;
+                objFromDb.CostPerNight  = obj.CostPerNight;
+                objFromDb.Address = obj.Address;
                 objFromDb.MinDaysForReservation = obj.MinDaysForReservation;
+                return objFromDb;
             }
+            Console.WriteLine("IS NULL");
+            return null;
         }
 
         public IQueryable<Residence>  GetAllSearch(ResidenceSearch residenceSearch)

@@ -128,17 +128,40 @@ namespace WebAppTEDI.Controllers
         }
 
         [HttpPost("updateResidence")]
-        public ActionResult UpdateResidence([FromForm] UpdateResidenceDTO updateResidenceDTO)
+        public async Task<ActionResult> UpdateResidence([FromForm] UpdateResidenceDTO updateResidenceDTO)
         {
-            List<IFormFile> images = updateResidenceDTO.FilesToAdd;
-            foreach (var image in images) { 
-                Console.WriteLine("Add "+image.FileName);
-            }
-            List<string> imagesv2 = updateResidenceDTO.ImagesToDelete;
-            foreach (var image in imagesv2)
+
+            Residence residence = _unitOfWork.Residence.Update(updateResidenceDTO);
+            if(residence == null)
             {
-                Console.WriteLine("Delete" + image);
+                return NotFound();
             }
+            if(updateResidenceDTO.FilesToAdd != null)
+            {
+                foreach(var  file in updateResidenceDTO.FilesToAdd)
+                {
+                    var imageResult = await _imageService.AddImageAsync(file);
+                    if (imageResult.Error != null)
+                        return BadRequest(new ProblemDetails { Title = imageResult.Error.Message });
+                    var image = new Image
+                    {
+                        URL = imageResult.SecureUrl.ToString(),
+                        PublicId = imageResult.PublicId,
+                    };
+                    _unitOfWork.Image.Add(image);
+                    residence.Images.Add(image);
+                }
+            }
+            if(updateResidenceDTO.ImagesToDelete != null)
+            {
+                foreach( var image in updateResidenceDTO.ImagesToDelete)
+                {
+                    Console.WriteLine(image);
+                    Image imageToDelete = _unitOfWork.Image.GetFirstOrDefault(x => x.URL == image);
+                    _unitOfWork.Image.Remove(imageToDelete);
+                }
+            }
+            _unitOfWork.Save();
             return StatusCode(201);
         }
     }
