@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using WebApp.DataAccess.Data;
 using WebApp.DataAccess.Repository.IRepository;
 using WebApp.Models;
@@ -60,9 +61,26 @@ namespace WebAppTEDI.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Residence> FindResidence(int id)
+        public ActionResult<ResidenceDTO> FindResidence(int id)
         {
-            return _unitOfWork.Residence.GetFirstOrDefault(x => x.Id == id);
+            var residence = _unitOfWork.Residence.GetFirstOrDefault(x => x.Id == id);
+            ResidenceDTO residenceDTO = _mapper.Map<ResidenceDTO>(residence);
+
+            var reservations = _unitOfWork.Reservation.GetAll(x => x.ResidenceId == residence.Id);
+
+            foreach (var r in reservations)
+            {
+                ReservationFromTo reservationFromTo = new ReservationFromTo();
+                reservationFromTo.From = r.From.ToString();
+                reservationFromTo.To = r.To.ToString();
+                residenceDTO.ReservationFromTo.Add(reservationFromTo);
+            }
+            var pictures = _unitOfWork.Image.GetAll(x => x.ResidenceId == residence.Id).ToList();
+            foreach (var p in pictures)
+            {
+                residenceDTO.ImageURL.Add(p.URL);
+            }
+            return residenceDTO;
         }
 
         [HttpPost("createResidence")]
@@ -107,6 +125,21 @@ namespace WebAppTEDI.Controllers
             _unitOfWork.Residence.Remove(residence);
             _unitOfWork.Save();
             return Ok();
+        }
+
+        [HttpPost("updateResidence")]
+        public ActionResult UpdateResidence([FromForm] UpdateResidenceDTO updateResidenceDTO)
+        {
+            List<IFormFile> images = updateResidenceDTO.FilesToAdd;
+            foreach (var image in images) { 
+                Console.WriteLine("Add "+image.FileName);
+            }
+            List<string> imagesv2 = updateResidenceDTO.ImagesToDelete;
+            foreach (var image in imagesv2)
+            {
+                Console.WriteLine("Delete" + image);
+            }
+            return StatusCode(201);
         }
     }
 }
