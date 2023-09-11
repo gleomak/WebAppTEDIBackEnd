@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Configuration.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -238,8 +239,39 @@ namespace WebAppTEDI.Controllers
             return residencesDTOS;
         }
 
-    }
+        [HttpGet("getHost")]
+        public async Task<ActionResult<HostDTO>> getHostProf([FromQuery] string ResidenceId)
+        {
+            var resIdInt = Convert.ToInt32(ResidenceId);
+            var residence = _unitOfWork.Residence.GetFirstOrDefault(x => x.Id == resIdInt);
+            var user = await _userManager.FindByIdAsync(residence.UserId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var UserReviews = _unitOfWork.LandlordReviews.GetAll(x => x.UserId == user.Id);
 
-    
+            var meanRating = 0.0;
+
+            if(UserReviews.Count() != 0)
+            {
+                double sum = 0;
+                foreach (var item in UserReviews)
+                {
+                    sum += item.StarRating;
+                }
+                meanRating = sum / UserReviews.Count();
+            }
+
+            var hostDTO = new HostDTO();
+            hostDTO.Rating = meanRating;
+            hostDTO.Username = user.UserName;
+            hostDTO.ImageURL = user.PictureURL;
+
+            return hostDTO;
+
+        }
+
+    }
 
 }

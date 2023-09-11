@@ -15,7 +15,7 @@ namespace WebApp.Models
         [Required]
         public string? Description { get; set; }
         [Required]
-        public double? StarRating { get; set; }
+        public double StarRating { get; set; }
 
         public string? UserId { get; set; }
         [ForeignKey("UserId")]
