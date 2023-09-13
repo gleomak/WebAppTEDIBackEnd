@@ -52,6 +52,8 @@ namespace WebApp.DataAccess.Repository
                 objFromDb.CostPerNight  = obj.CostPerNight;
                 objFromDb.Address = obj.Address;
                 objFromDb.MinDaysForReservation = obj.MinDaysForReservation;
+                objFromDb.Latitude = obj.Latitude;
+                objFromDb.Longitude = obj.Longitude;
                 return objFromDb;
             }
             Console.WriteLine("IS NULL");
