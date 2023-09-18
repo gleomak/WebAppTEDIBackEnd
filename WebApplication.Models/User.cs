@@ -21,5 +21,7 @@ namespace WebApp.Models
 
         public string? PublicId { get; set; }
         public bool RoleAuthorized { get; set; }
+
+        public ICollection<Message> Messages { get;} = new List<Message>();
     }
 }

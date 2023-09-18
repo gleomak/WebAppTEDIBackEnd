@@ -65,10 +65,8 @@ namespace WebApp.Models.DTOs
         [Required]
         public string? Address { get; set; }
 
-        [Required]
-        public List<string> ImagesToDelete { get; set; }
-        [Required]
-        public List<IFormFile> FilesToAdd { get; set; }
+        public List<string>? ImagesToDelete { get; set; }
+        public List<IFormFile>? FilesToAdd { get; set; }
 
     }
 }

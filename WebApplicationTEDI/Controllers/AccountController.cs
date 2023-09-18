@@ -253,15 +253,15 @@ namespace WebAppTEDI.Controllers
 
             var meanRating = 0.0;
 
-            if(UserReviews.Count() != 0)
-            {
-                double sum = 0;
-                foreach (var item in UserReviews)
-                {
-                    sum += item.StarRating;
-                }
-                meanRating = sum / UserReviews.Count();
-            }
+            //if(UserReviews.Count() != 0)
+            //{
+            //    double sum = 0;
+            //    foreach (var item in UserReviews)
+            //    {
+            //        sum += item.StarRating;
+            //    }
+            //    meanRating = sum / UserReviews.Count();
+            //}
 
             var hostDTO = new HostDTO();
             hostDTO.Rating = meanRating;
@@ -272,6 +272,46 @@ namespace WebAppTEDI.Controllers
 
         }
 
+        [HttpPost("postMessage")]
+        [Authorize]
+        public async Task<ActionResult> postMessage([FromForm]  AddMessageDTO addMessageDTO) {
+            User RecipientUser = await _userManager.FindByNameAsync(addMessageDTO.RecipientUsername);
+            Message message = new Message
+            {
+                UserId = RecipientUser.Id,
+                MessageBody = addMessageDTO.MessageBody,
+                SenderUsername = User.Identity.Name,
+            };
+            _unitOfWork.Message.Add(message);
+            _unitOfWork.Save();
+            return StatusCode(201);
+        }
+
+        [HttpGet("getUserMessages")]
+        [Authorize]
+        public async Task<ActionResult<PagedList<MessageDTO>>> GetUserMessages([FromQuery] PaginationParams pagination)
+        {
+            User user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var userMessages = _unitOfWork.Message.GetAllUserMessages(user.Id);
+            var userMessagesV2 = await PagedList<Message>.ToPagedList(userMessages, pagination.pageNumber, pagination.PageSize);    
+            List<MessageDTO> messages = new List<MessageDTO>();
+            foreach (var item in userMessagesV2)
+            {
+                User senderUsername = await _userManager.FindByNameAsync(item.SenderUsername);
+                MessageDTO message = new MessageDTO
+                {
+                    Id = item.Id,
+                    Message = item.MessageBody,
+                    SenderUsername = item.SenderUsername,
+                    SenderImageURL = senderUsername.PictureURL
+                };
+
+                messages.Add(message);
+            }
+            var PagedUserMessages = new PagedList<MessageDTO>(messages, userMessagesV2.Metadata.TotalCount, userMessagesV2.Metadata.CurrentPage, userMessagesV2.Metadata.PageSize);
+            Response.AddPaginationHeader(PagedUserMessages.Metadata);
+            return PagedUserMessages;
+        }
     }
 
 }
