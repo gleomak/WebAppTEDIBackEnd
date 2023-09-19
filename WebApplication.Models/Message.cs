@@ -10,7 +10,11 @@ namespace WebApp.Models
     public class Message
     {
         public int Id { get; set; }
+
+        [Required]
         public string? MessageBody { get; set; }
+
+        public string? ResidenceTitle { get; set; }
 
         [Required]
         public string? UserId { get; set; }

@@ -10,6 +10,6 @@ namespace WebApp.DataAccess.Repository.IRepository
 {
     public interface IMessageRepository : IRepository<Message>
     {
-        public IQueryable<Message> GetAllUserMessages(string userId);
+        public IQueryable<Message> GetAllUserMessages(string userId, string residenceTitle);
     }
 }

@@ -18,9 +18,13 @@ namespace WebApp.DataAccess.Repository
             _db = db;
         }
 
-        public IQueryable<Message> GetAllUserMessages(string userId)
+        public IQueryable<Message> GetAllUserMessages(string userId, string residenceTitle)
         {
-            var messages = _db.Messages.Where(x => x.UserId == userId); 
+            IQueryable<Message> messages = _db.Messages.AsQueryable();       
+            messages = messages.Where(x => x.UserId == userId); 
+            if(residenceTitle != null) { 
+                messages = messages.Where(x => x.ResidenceTitle == residenceTitle);
+            }
             return messages;    
         }
 

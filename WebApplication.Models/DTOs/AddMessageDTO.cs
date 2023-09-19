@@ -10,5 +10,7 @@ namespace WebApp.Models.DTOs
     {
         public string? MessageBody { get; set; }
         public string? RecipientUsername { get; set; }
+
+        public string? ResidenceTitle { get; set; }
     }
 }

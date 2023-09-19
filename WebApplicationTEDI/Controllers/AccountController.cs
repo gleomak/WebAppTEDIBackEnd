@@ -281,6 +281,7 @@ namespace WebAppTEDI.Controllers
                 UserId = RecipientUser.Id,
                 MessageBody = addMessageDTO.MessageBody,
                 SenderUsername = User.Identity.Name,
+                ResidenceTitle = addMessageDTO.ResidenceTitle,
             };
             _unitOfWork.Message.Add(message);
             _unitOfWork.Save();
@@ -289,19 +290,22 @@ namespace WebAppTEDI.Controllers
 
         [HttpGet("getUserMessages")]
         [Authorize]
-        public async Task<ActionResult<PagedList<MessageDTO>>> GetUserMessages([FromQuery] PaginationParams pagination)
+        public async Task<ActionResult<PagedList<MessageDTO>>> GetUserMessages([FromQuery] PaginationParams pagination, string? ResidenceTitle)
         {
             User user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var userMessages = _unitOfWork.Message.GetAllUserMessages(user.Id);
-            var userMessagesV2 = await PagedList<Message>.ToPagedList(userMessages, pagination.pageNumber, pagination.PageSize);    
+            var userMessages = _unitOfWork.Message.GetAllUserMessages(user.Id, ResidenceTitle);
+            var userMessagesV2 = await PagedList<Message>.ToPagedList(userMessages, pagination.pageNumber, pagination.PageSize);
             List<MessageDTO> messages = new List<MessageDTO>();
-            foreach (var item in userMessagesV2)
+            int lastIndex = userMessagesV2.Count - 1;
+            for(int i = lastIndex; i >= 0; i--)
             {
+                var item = userMessagesV2[i];
                 User senderUsername = await _userManager.FindByNameAsync(item.SenderUsername);
                 MessageDTO message = new MessageDTO
                 {
                     Id = item.Id,
                     Message = item.MessageBody,
+                    ResidenceTitle = item.ResidenceTitle,
                     SenderUsername = item.SenderUsername,
                     SenderImageURL = senderUsername.PictureURL
                 };
