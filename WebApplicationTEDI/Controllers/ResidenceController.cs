@@ -132,7 +132,7 @@ namespace WebAppTEDI.Controllers
         }
 
         [HttpPost("updateResidence")]
-        public async Task<ActionResult> UpdateResidence([FromForm] UpdateResidenceDTO updateResidenceDTO)
+        public async Task<ActionResult<Residence>> UpdateResidence([FromForm] UpdateResidenceDTO updateResidenceDTO)
         {
 
             Residence residence = _unitOfWork.Residence.Update(updateResidenceDTO);
@@ -166,7 +166,7 @@ namespace WebAppTEDI.Controllers
                 }
             }
             _unitOfWork.Save();
-            return StatusCode(201);
+            return Ok(residence);
         }
 
         [HttpGet("getDataXML")]
