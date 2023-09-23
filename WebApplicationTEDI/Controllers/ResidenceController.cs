@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
+using System.Xml.Serialization;
 using WebApp.DataAccess.Data;
 using WebApp.DataAccess.Repository.IRepository;
 using WebApp.Models;
@@ -163,6 +167,52 @@ namespace WebAppTEDI.Controllers
             }
             _unitOfWork.Save();
             return StatusCode(201);
+        }
+
+        [HttpGet("getDataXML")]
+        public IActionResult GetDataXML()
+        {
+            List<Residence> residences = _unitOfWork.Residence.GetAll().ToList();
+            if(residences.Count == 0)
+            {
+                return NoContent();
+            }
+            using (MemoryStream stream = new MemoryStream())
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(List<Residence>));
+                serializer.Serialize(stream, residences);
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+                var result = new FileContentResult(stream.ToArray(), "application/xml")
+                {
+                    FileDownloadName = "Residences.xml"
+                };
+
+                return result;
+            }
+
+        }
+
+        [HttpGet("getDataJSON")]
+        public IActionResult GetDataJSON()
+        {
+            List<Residence> residences = _unitOfWork.Residence.GetAll().ToList();
+            if (residences.Count == 0)
+            {
+                return NoContent();
+            }
+            string jsonData = JsonSerializer.Serialize(residences);
+
+            // Set response headers to indicate a downloadable JSON file
+            var contentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = "data.json"
+            };
+            Response.Headers.Add("Content-Disposition", contentDisposition.ToString());
+
+            // Return JSON data as a FileResult with content type application/json
+            return File(Encoding.UTF8.GetBytes(jsonData), "application/json");
         }
     }
 }

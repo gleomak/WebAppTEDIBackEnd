@@ -41,6 +41,7 @@ namespace WebAppTEDI.Controllers
             if (user == null || !await _userManager.CheckPasswordAsync(user, loginDTO.Password)) {
                 return Unauthorized();
             }
+            var roles = await _userManager.GetRolesAsync(user);
             return new UserDTO {
                 Id = user.Id,
                 FirstName = user.FirstName,
@@ -50,6 +51,7 @@ namespace WebAppTEDI.Controllers
                 StreetAddress = user.StreetAddress,
                 PhoneNumber = user.PhoneNumber,
                 PictureURL = user.PictureURL,
+                Roles = new List<string>(roles),
                 RoleAuthorized = user.RoleAuthorized,
                 Token = await _tokenService.GenerateToken(user),
             };
@@ -105,6 +107,8 @@ namespace WebAppTEDI.Controllers
         public async Task<ActionResult<UserDTO>> GetCurrentUser()
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var roles = await _userManager.GetRolesAsync(user);
+            Console.WriteLine(roles);
             return new UserDTO
             {
                 Id = user.Id,
@@ -115,6 +119,7 @@ namespace WebAppTEDI.Controllers
                 StreetAddress = user.StreetAddress,
                 PhoneNumber = user.PhoneNumber,
                 PictureURL = user.PictureURL,
+                Roles = new List<string>(roles),
                 RoleAuthorized = user.RoleAuthorized,
                 Token = await _tokenService.GenerateToken(user),
             };
@@ -195,9 +200,6 @@ namespace WebAppTEDI.Controllers
         public async Task<ActionResult> AuthorizeUser([FromForm] string username)
         {
             var user = await _userManager.FindByNameAsync(username);
-
-            Console.WriteLine(user.UserName + " is " + user.RoleAuthorized);
-
             user.RoleAuthorized = true;
             _unitOfWork.Save();
             return StatusCode(201);
