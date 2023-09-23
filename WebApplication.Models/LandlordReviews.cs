@@ -23,6 +23,6 @@ namespace WebApp.Models
         public User User { get; set; } = null!;
 
         [Required]
-        public int ReviewBy { get; set; }
+        public string ReviewByUser { get; set; }
     }
 }

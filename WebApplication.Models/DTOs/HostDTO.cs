@@ -11,5 +11,7 @@ namespace WebApp.Models.DTOs
         public string Username { get; set; }
         public string ImageURL { get; set; }
         public double Rating { get; set; }
+
+        public List<LandlordReviews> HostReviews { get; set; }
     }
 }

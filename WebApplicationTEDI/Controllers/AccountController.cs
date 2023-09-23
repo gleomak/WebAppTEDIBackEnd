@@ -255,23 +255,42 @@ namespace WebAppTEDI.Controllers
 
             var meanRating = 0.0;
 
-            //if(UserReviews.Count() != 0)
-            //{
-            //    double sum = 0;
-            //    foreach (var item in UserReviews)
-            //    {
-            //        sum += item.StarRating;
-            //    }
-            //    meanRating = sum / UserReviews.Count();
-            //}
+            if (UserReviews.Count() != 0)
+            {
+                double sum = 0;
+                foreach (var item in UserReviews)
+                {
+                    sum += item.StarRating;
+                }
+                meanRating = sum / UserReviews.Count();
+            }
 
             var hostDTO = new HostDTO();
             hostDTO.Rating = meanRating;
             hostDTO.Username = user.UserName;
             hostDTO.ImageURL = user.PictureURL;
+            hostDTO.HostReviews = UserReviews.ToList();
 
             return hostDTO;
 
+        }
+
+        [HttpPost("postLandlordReview")]
+        [Authorize(Roles = "Member")]
+        public async Task<ActionResult> PostLandlordReview([FromForm] LandlordReviewDTO landlordReviewDTO)
+        {
+            User Host = await _userManager.FindByNameAsync(landlordReviewDTO.HostName);
+            LandlordReviews lreview = new LandlordReviews
+            {
+                Description = landlordReviewDTO.Description,
+                StarRating = double.Parse(landlordReviewDTO.StarRating),
+                UserId = Host.Id,
+                ReviewByUser = landlordReviewDTO.ReviewByUser,
+            };
+
+            _unitOfWork.LandlordReviews.Add(lreview);
+            _unitOfWork.Save();
+            return Ok();
         }
 
         [HttpPost("postMessage")]
