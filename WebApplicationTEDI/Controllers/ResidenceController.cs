@@ -55,8 +55,25 @@ namespace WebAppTEDI.Controllers
                     {
                         residenceDTO.ImageURL.Add(p.URL);
                     }
-                    list.Add(residenceDTO);
                 }
+
+                var reviews = _unitOfWork.ResidenceReviews.GetAll(x => x.ResidenceId == res.Id).ToList();
+                Console.WriteLine(reviews);
+                //foreach(var r in reviews)
+                //{
+                //    ResidenceReviews resReview = new ResidenceReviews;
+                //    resReview.StarRating = r.StarRating;
+                //    resReview.Description = r.Description;
+
+
+                //}
+                if(residenceDTO.Reviews != null)
+                {
+                    residenceDTO.Reviews = reviews;
+                }
+                
+
+                list.Add(residenceDTO);
             }
             var residencesDTOS = new PagedList<ResidenceDTO>(list, residencesM.Metadata.TotalCount, residencesM.Metadata.CurrentPage, residencesM.Metadata.PageSize);
             Response.AddPaginationHeader(residencesDTOS.Metadata);
@@ -213,6 +230,22 @@ namespace WebAppTEDI.Controllers
 
             // Return JSON data as a FileResult with content type application/json
             return File(Encoding.UTF8.GetBytes(jsonData), "application/json");
+        }
+
+        [HttpPost("createResidenceReview")]
+        public async Task<ActionResult> CreateResidenceReview([FromForm] ResidenceReviewDTO residenceReviewDTO)
+        {
+            ResidenceReviews resReview = new ResidenceReviews
+            {
+                ResidenceId = int.Parse(residenceReviewDTO.ResidenceId),
+                Username = residenceReviewDTO.Username,
+                StarRating = double.Parse(residenceReviewDTO.StarRating),
+                Description = residenceReviewDTO.Description
+            };
+
+            _unitOfWork.ResidenceReviews.Add(resReview);
+            _unitOfWork.Save();
+            return Ok();
         }
     }
 }

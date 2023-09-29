@@ -70,6 +70,7 @@ namespace WebApp.Models
 
         public ICollection<Image> Images { get; } = new List<Image>();
         public ICollection<Reservation> Reservations { get;} = new List<Reservation>(); 
+        public ICollection<ResidenceReviews> Reviews { get; } = new List<ResidenceReviews>();
 
     }
 }

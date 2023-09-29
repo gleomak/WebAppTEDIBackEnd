@@ -15,11 +15,12 @@ namespace WebApp.Models
         public string? Description { get; set; }
         [Required]
         public double? StarRating { get; set; }
-        
+
+        [Required]
         public int ResidenceId { get; set; }
         public Residence Residence { get; set; } = null!;
 
-        public int ReviewerId { get; set; }
+        public string Username { get; set; }
 
     }
 }
