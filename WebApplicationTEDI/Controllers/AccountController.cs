@@ -71,15 +71,6 @@ namespace WebAppTEDI.Controllers
                 RoleAuthorized = registerDTO.Role.Equals("Member") ? true : false,
             };
             //var user = _mapper.Map<User>(registerDTO);
-            if (registerDTO.File != null)
-            {
-                var imageResult = await _imageService.AddImageAsync(registerDTO.File);
-                if (imageResult.Error != null)
-                    return BadRequest(new ProblemDetails { Title = imageResult.Error.Message });
-                user.PictureURL = imageResult?.SecureUrl.ToString();
-                user.PublicId = imageResult?.PublicId;
-            }
-
             var result = await _userManager.CreateAsync(user, registerDTO.Password);
             if (!result.Succeeded)
             {
@@ -88,6 +79,14 @@ namespace WebAppTEDI.Controllers
                     ModelState.AddModelError(error.Code, error.Description);
                 }
                 return ValidationProblem();
+            }
+            if (registerDTO.File != null)
+            {
+                var imageResult = await _imageService.AddImageAsync(registerDTO.File);
+                if (imageResult.Error != null)
+                    return BadRequest(new ProblemDetails { Title = imageResult.Error.Message });
+                user.PictureURL = imageResult?.SecureUrl.ToString();
+                user.PublicId = imageResult?.PublicId;
             }
             if (registerDTO.Role.Equals("Host"))
             {
