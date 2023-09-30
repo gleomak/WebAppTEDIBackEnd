@@ -11,6 +11,6 @@ namespace WebApp.Models.DTOs
         public List<string> ImageURL { get; set; } = new List<string>();
         public List<ReservationFromTo> ReservationFromTo { get; set; } = new List<ReservationFromTo>();
 
-        public List<ResidenceReviews> Reviews { get; set; } = new List<ResidenceReviews>();
+        public List<ResidenceReviewDTO> Reviewss { get; set; } = new List<ResidenceReviewDTO>();
     }
 }

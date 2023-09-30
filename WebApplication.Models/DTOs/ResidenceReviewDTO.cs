@@ -10,7 +10,7 @@ namespace WebApp.Models.DTOs
     public class ResidenceReviewDTO
     {
         [Required]
-        public string ResidenceId { get; set; }
+        public int ResidenceId { get; set; }
         [Required]
         public string? Description { get; set; }
 

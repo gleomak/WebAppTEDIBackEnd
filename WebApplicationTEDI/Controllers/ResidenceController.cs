@@ -58,22 +58,18 @@ namespace WebAppTEDI.Controllers
                 }
 
                 var reviews = _unitOfWork.ResidenceReviews.GetAll(x => x.ResidenceId == res.Id).ToList();
-                Console.WriteLine(reviews);
-                //foreach(var r in reviews)
-                //{
-                //    ResidenceReviews resReview = new ResidenceReviews;
-                //    resReview.StarRating = r.StarRating;
-                //    resReview.Description = r.Description;
-
-
-                //}
-                if(residenceDTO.Reviews != null)
+                foreach (var r in reviews)
                 {
-                    residenceDTO.Reviews = reviews;
+                    ResidenceReviewDTO resReview = new ResidenceReviewDTO
+                    {
+                        ResidenceId = r.ResidenceId,
+                        Description = r.Description,
+                        StarRating = r.StarRating.ToString(),
+                        Username = r.Username,
+                    };
+                    residenceDTO.Reviewss.Add(resReview);
                 }
-                
-
-                list.Add(residenceDTO);
+                    list.Add(residenceDTO);
             }
             var residencesDTOS = new PagedList<ResidenceDTO>(list, residencesM.Metadata.TotalCount, residencesM.Metadata.CurrentPage, residencesM.Metadata.PageSize);
             Response.AddPaginationHeader(residencesDTOS.Metadata);
@@ -237,7 +233,7 @@ namespace WebAppTEDI.Controllers
         {
             ResidenceReviews resReview = new ResidenceReviews
             {
-                ResidenceId = int.Parse(residenceReviewDTO.ResidenceId),
+                ResidenceId = residenceReviewDTO.ResidenceId,
                 Username = residenceReviewDTO.Username,
                 StarRating = double.Parse(residenceReviewDTO.StarRating),
                 Description = residenceReviewDTO.Description
