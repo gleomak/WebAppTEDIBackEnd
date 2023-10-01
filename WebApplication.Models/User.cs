@@ -23,5 +23,6 @@ namespace WebApp.Models
         public bool RoleAuthorized { get; set; }
 
         public ICollection<Message> Messages { get;} = new List<Message>();
+        public ICollection<ViewedResidences> ViewedResidences { get; } = new List<ViewedResidences>();
     }
 }

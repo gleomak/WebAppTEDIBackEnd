@@ -6,10 +6,13 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAppTEDI", "WebApplicationTEDI\WebAppTEDI.csproj", "{1C2334EA-8B8E-4326-B5B7-E13D1CF74CCB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.DataAccess", "WebApplication.DataAccess\WebApp.DataAccess.csproj", "{B2E01730-B711-453F-A7C1-E26B5B2713B8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3AFEE858-0E4A-407D-B959-D7E2880E5CAF} = {3AFEE858-0E4A-407D-B959-D7E2880E5CAF}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.Models", "WebApplication.Models\WebApp.Models.csproj", "{BD320A2B-2C3C-4914-884E-AA7096915524}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp.Services", "Services\WebApp.Services.csproj", "{3AFEE858-0E4A-407D-B959-D7E2880E5CAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.Services", "Services\WebApp.Services.csproj", "{3AFEE858-0E4A-407D-B959-D7E2880E5CAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

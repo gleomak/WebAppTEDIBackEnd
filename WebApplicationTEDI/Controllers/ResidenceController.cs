@@ -183,6 +183,7 @@ namespace WebAppTEDI.Controllers
         }
 
         [HttpGet("getDataXML")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetDataXML()
         {
             List<Residence> residences = _unitOfWork.Residence.GetAll().ToList();
@@ -208,6 +209,7 @@ namespace WebAppTEDI.Controllers
         }
 
         [HttpGet("getDataJSON")]
+        [Authorize(Roles ="Admin")]
         public IActionResult GetDataJSON()
         {
             List<Residence> residences = _unitOfWork.Residence.GetAll().ToList();
@@ -229,6 +231,7 @@ namespace WebAppTEDI.Controllers
         }
 
         [HttpPost("createResidenceReview")]
+
         public async Task<ActionResult> CreateResidenceReview([FromForm] ResidenceReviewDTO residenceReviewDTO)
         {
             ResidenceReviews resReview = new ResidenceReviews

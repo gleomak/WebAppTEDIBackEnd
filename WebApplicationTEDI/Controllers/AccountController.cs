@@ -336,6 +336,19 @@ namespace WebAppTEDI.Controllers
             Response.AddPaginationHeader(PagedUserMessages.Metadata);
             return PagedUserMessages;
         }
+
+        [HttpDelete("deleteUserMessage/{Id}")]
+        [Authorize]
+        public IActionResult DeleteUserMessage(int Id)
+        {
+            Message message = _unitOfWork.Message.GetFirstOrDefault(x => x.Id == Id);
+            if(message == null)
+                return NotFound();
+            _unitOfWork.Message.Remove(message);
+            _unitOfWork.Save();
+            return Ok();
+
+        }
     }
 
 }

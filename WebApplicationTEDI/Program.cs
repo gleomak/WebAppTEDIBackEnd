@@ -105,7 +105,8 @@ var scope = app.Services.CreateScope();
 var unitOfWork = scope.ServiceProvider.GetService<UnitOfWork>();
 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+var imageService = scope.ServiceProvider.GetRequiredService<ImageService>();
 
-await DbInitializer.Initialize(context, userManager, unitOfWork);
+await DbInitializer.Initialize(context, userManager, unitOfWork, imageService);
 
 app.Run();
