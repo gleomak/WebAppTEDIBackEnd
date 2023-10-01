@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 using WebApp.DataAccess.Data;
 using WebApp.DataAccess.Repository.IRepository;
 using WebApp.Models;
-using WebApp.Services;
 
 namespace WebApp.DataAccess
 {
     public static class DbInitializer
     {
-        public static async Task Initialize(ApplicationDbContext db, UserManager<User> userManager, IUnitOfWork _unitOfWork, ImageService _imageService)
+        public static async Task Initialize(ApplicationDbContext db, UserManager<User> userManager, IUnitOfWork _unitOfWork)
         {
             if(!userManager.Users.Any())
             {

@@ -24,5 +24,6 @@ namespace WebApp.Models
 
         public ICollection<Message> Messages { get;} = new List<Message>();
         public ICollection<ViewedResidences> ViewedResidences { get; } = new List<ViewedResidences>();
+        public ICollection<SearchedNeighborhoods> SearchedNeighborhoods { get; } = new List<SearchedNeighborhoods>();
     }
 }

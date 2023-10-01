@@ -51,22 +51,22 @@ namespace WebApp.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "87549ac0-aeeb-47d3-9ac6-c61eda9a348b",
-                            ConcurrencyStamp = "9532df5d-7bc6-4396-96b6-dc7cf8732acc",
+                            Id = "2567fd61-b313-4075-8a44-ab975c30ef96",
+                            ConcurrencyStamp = "20c9b55a-c6f6-4087-b868-58aa30148fea",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "8cdc7e44-0df3-4fb4-9ea8-3745f590573f",
-                            ConcurrencyStamp = "2deed552-8e5b-4616-81b7-0e2e6a2774c2",
+                            Id = "0d1c1b98-d49c-4ed2-a754-f8d1cde6aba4",
+                            ConcurrencyStamp = "198855c1-f2ed-4cba-bb6e-e9f878c47f94",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "395fb3b3-a2ed-4943-b5e3-b276fcc85409",
-                            ConcurrencyStamp = "462ffd34-182d-4791-89f7-1b60cb5a283b",
+                            Id = "f8b3c748-bdbd-4867-b2e8-dfbf1aad35e6",
+                            ConcurrencyStamp = "a25bd5b7-d855-44fa-8fbd-8d4095f4a8cc",
                             Name = "Host",
                             NormalizedName = "HOST"
                         });
@@ -178,6 +178,32 @@ namespace WebApp.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("WebApp.Models.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ResidenceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("URL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ResidenceId");
+
+                    b.ToTable("Images");
+                });
+
             modelBuilder.Entity("WebApp.Models.LandlordReviews", b =>
                 {
                     b.Property<int>("Id")
@@ -190,11 +216,11 @@ namespace WebApp.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ReviewBy")
-                        .HasColumnType("int");
-
-                    b.Property<double?>("StarRating")
+                    b.Property<string>("ReviewByUser")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("StarRating")
                         .HasColumnType("float");
 
                     b.Property<string>("UserId")
@@ -206,6 +232,36 @@ namespace WebApp.DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("LandlordReviews");
+                });
+
+            modelBuilder.Entity("WebApp.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("MessageBody")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResidenceTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderUsername")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("WebApp.Models.Reservation", b =>
@@ -221,6 +277,9 @@ namespace WebApp.DataAccess.Migrations
 
                     b.Property<int>("ResidenceId")
                         .HasColumnType("int");
+
+                    b.Property<string>("StayingMemberUsername")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("To")
                         .HasColumnType("datetime2");
@@ -264,9 +323,6 @@ namespace WebApp.DataAccess.Migrations
 
                     b.Property<bool>("Events")
                         .HasColumnType("bit");
-
-                    b.Property<string>("ImageURL")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Internet")
                         .HasColumnType("bit");
@@ -325,7 +381,13 @@ namespace WebApp.DataAccess.Migrations
                     b.Property<bool>("Tv")
                         .HasColumnType("bit");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Residences");
                 });
@@ -345,18 +407,42 @@ namespace WebApp.DataAccess.Migrations
                     b.Property<int>("ResidenceId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReviewerId")
-                        .HasColumnType("int");
-
                     b.Property<double?>("StarRating")
                         .IsRequired()
                         .HasColumnType("float");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ResidenceId");
 
                     b.ToTable("ResidenceReviews");
+                });
+
+            modelBuilder.Entity("WebApp.Models.SearchedNeighborhoods", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Neighborhood")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SearchedNeighborhoods");
                 });
 
             modelBuilder.Entity("WebApp.Models.User", b =>
@@ -377,6 +463,14 @@ namespace WebApp.DataAccess.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -401,7 +495,20 @@ namespace WebApp.DataAccess.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("PictureURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("RoleAuthorized")
+                        .HasColumnType("bit");
+
                     b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreetAddress")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -422,6 +529,30 @@ namespace WebApp.DataAccess.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("WebApp.Models.ViewedResidences", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ResidenceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ResidenceId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ViewedResidences");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -475,6 +606,17 @@ namespace WebApp.DataAccess.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("WebApp.Models.Image", b =>
+                {
+                    b.HasOne("WebApp.Models.Residence", "Residence")
+                        .WithMany("Images")
+                        .HasForeignKey("ResidenceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Residence");
+                });
+
             modelBuilder.Entity("WebApp.Models.LandlordReviews", b =>
                 {
                     b.HasOne("WebApp.Models.User", "User")
@@ -486,10 +628,21 @@ namespace WebApp.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WebApp.Models.Message", b =>
+                {
+                    b.HasOne("WebApp.Models.User", "User")
+                        .WithMany("Messages")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WebApp.Models.Reservation", b =>
                 {
                     b.HasOne("WebApp.Models.Residence", "Residence")
-                        .WithMany()
+                        .WithMany("Reservations")
                         .HasForeignKey("ResidenceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -497,15 +650,76 @@ namespace WebApp.DataAccess.Migrations
                     b.Navigation("Residence");
                 });
 
+            modelBuilder.Entity("WebApp.Models.Residence", b =>
+                {
+                    b.HasOne("WebApp.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WebApp.Models.ResidenceReviews", b =>
                 {
                     b.HasOne("WebApp.Models.Residence", "Residence")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("ResidenceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Residence");
+                });
+
+            modelBuilder.Entity("WebApp.Models.SearchedNeighborhoods", b =>
+                {
+                    b.HasOne("WebApp.Models.User", "User")
+                        .WithMany("SearchedNeighborhoods")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebApp.Models.ViewedResidences", b =>
+                {
+                    b.HasOne("WebApp.Models.Residence", "Residence")
+                        .WithMany("ViewedResidences")
+                        .HasForeignKey("ResidenceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApp.Models.User", "User")
+                        .WithMany("ViewedResidences")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Residence");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebApp.Models.Residence", b =>
+                {
+                    b.Navigation("Images");
+
+                    b.Navigation("Reservations");
+
+                    b.Navigation("Reviews");
+
+                    b.Navigation("ViewedResidences");
+                });
+
+            modelBuilder.Entity("WebApp.Models.User", b =>
+                {
+                    b.Navigation("Messages");
+
+                    b.Navigation("SearchedNeighborhoods");
+
+                    b.Navigation("ViewedResidences");
                 });
 #pragma warning restore 612, 618
         }

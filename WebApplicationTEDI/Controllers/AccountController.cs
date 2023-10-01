@@ -206,7 +206,7 @@ namespace WebAppTEDI.Controllers
 
         [HttpGet("getHostResidences")]
         [Authorize(Roles = "Host")]
-        public async Task<ActionResult<PagedList<ResidenceDTO>>> getHostResidences([FromQuery]PaginationParams pagination)
+        public async Task<ActionResult<PagedList<ResidenceDTO>>> getHostResidences([FromQuery] PaginationParams pagination)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var residences = _unitOfWork.Residence.UserResidences(user.Id);
@@ -294,7 +294,7 @@ namespace WebAppTEDI.Controllers
 
         [HttpPost("postMessage")]
         [Authorize]
-        public async Task<ActionResult> postMessage([FromForm]  AddMessageDTO addMessageDTO) {
+        public async Task<ActionResult> postMessage([FromForm] AddMessageDTO addMessageDTO) {
             User RecipientUser = await _userManager.FindByNameAsync(addMessageDTO.RecipientUsername);
             Message message = new Message
             {
@@ -317,7 +317,7 @@ namespace WebAppTEDI.Controllers
             var userMessagesV2 = await PagedList<Message>.ToPagedList(userMessages, pagination.pageNumber, pagination.PageSize);
             List<MessageDTO> messages = new List<MessageDTO>();
             int lastIndex = userMessagesV2.Count - 1;
-            for(int i = lastIndex; i >= 0; i--)
+            for (int i = lastIndex; i >= 0; i--)
             {
                 var item = userMessagesV2[i];
                 User senderUsername = await _userManager.FindByNameAsync(item.SenderUsername);
@@ -342,12 +342,27 @@ namespace WebAppTEDI.Controllers
         public IActionResult DeleteUserMessage(int Id)
         {
             Message message = _unitOfWork.Message.GetFirstOrDefault(x => x.Id == Id);
-            if(message == null)
+            if (message == null)
                 return NotFound();
             _unitOfWork.Message.Remove(message);
             _unitOfWork.Save();
             return Ok();
 
+        }
+
+        [HttpPost("postUserSearchedNeighborhoods")]
+        [Authorize]
+        public async Task<IActionResult> PostUserSearchedNeighborhood([FromForm] string Neighborhood)
+        {
+            User user = await _userManager.FindByNameAsync(User.Identity.Name);
+            SearchedNeighborhoods searchedNeighborhoods = new SearchedNeighborhoods
+            {
+                UserId = user.Id,
+                Neighborhood = Neighborhood
+            };
+            _unitOfWork.SearchedNeighborhoods.Add(searchedNeighborhoods);
+            _unitOfWork.Save();
+            return Ok();
         }
     }
 

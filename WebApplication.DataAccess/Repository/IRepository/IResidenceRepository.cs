@@ -17,6 +17,8 @@ namespace WebApp.DataAccess.Repository.IRepository
         IQueryable<Residence> GetAllSearch(ResidenceSearch residenceSearch);
         IQueryable<Residence> UserResidences(string UserId);
 
+        IQueryable<Residence> GetResidences();
+
         //PagedList<ResidenceDTO> ResidenceToResidenceDTO (PagedList<Residence> residenceList);
     }
 }

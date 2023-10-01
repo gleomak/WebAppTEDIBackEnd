@@ -106,6 +106,12 @@ namespace WebApp.DataAccess.Repository
             return residences;
         }
 
+        public IQueryable<Residence> GetResidences()
+        {
+            IQueryable<Residence> residences = _db.Residences.AsQueryable();
+            return residences;
+        }
+
         //public PagedList<ResidenceDTO> ResidenceToResidenceDTO(PagedList<Residence> residencePagedList)
         //{
         //    List<ResidenceDTO> list = new List<ResidenceDTO>();

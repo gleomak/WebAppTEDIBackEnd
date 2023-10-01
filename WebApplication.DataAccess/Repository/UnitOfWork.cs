@@ -24,6 +24,7 @@ namespace WebApp.DataAccess.Repository
             Image = new ImageRepository(_db);
             Message = new MessageRepository(_db);
             ViewedResidences = new ViewedResidencesRepository(_db);
+            SearchedNeighborhoods = new SearchedNeighborhoodsRepository(_db);
         }
         public IResidenceRepository Residence { get; private set; }
         public IReservationRepository Reservation { get; private set; }
@@ -33,6 +34,7 @@ namespace WebApp.DataAccess.Repository
         public IMessageRepository Message { get; private set; }
         public IViewedResidencesRepository ViewedResidences { get; private set; }
 
+        public ISearchedNeighborhoodsRepository SearchedNeighborhoods { get; private set; }
         public void Save()
         {
              _db.SaveChanges();

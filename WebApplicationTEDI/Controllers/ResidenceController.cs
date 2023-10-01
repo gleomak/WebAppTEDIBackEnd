@@ -32,8 +32,8 @@ namespace WebAppTEDI.Controllers
 
         [HttpGet]
         public async Task<ActionResult<PagedList<ResidenceDTO>>> GetResidence([FromQuery] ResidenceSearch residenceSearch) {
-
             var residences = _unitOfWork.Residence.GetAllSearch(residenceSearch);
+
             var residencesM = await PagedList<Residence>.ToPagedList(residences, residenceSearch.pageNumber, residenceSearch.PageSize);
             List<ResidenceDTO> list = new List<ResidenceDTO>();
             foreach (var res in residencesM)
@@ -231,9 +231,14 @@ namespace WebAppTEDI.Controllers
         }
 
         [HttpPost("createResidenceReview")]
-
+        [Authorize]
         public async Task<ActionResult> CreateResidenceReview([FromForm] ResidenceReviewDTO residenceReviewDTO)
         {
+            List<Reservation> userReservations = _unitOfWork.Reservation.GetAll(x => x.ResidenceId == residenceReviewDTO.ResidenceId && x.StayingMemberUsername == User.Identity.Name).ToList();
+            if(userReservations.Count == 0)
+            {
+                return BadRequest("Cannot post review for a residence you did not stay in!");
+            }
             ResidenceReviews resReview = new ResidenceReviews
             {
                 ResidenceId = residenceReviewDTO.ResidenceId,

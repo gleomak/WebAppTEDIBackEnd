@@ -49,6 +49,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
+builder.Services.AddSingleton<IHostedService, MatrixFactorizationBackgroundService>();
+builder.Services.AddSingleton<MatrixFactorization>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddCors();
 builder.Services.AddIdentityCore<User>()
@@ -105,8 +107,7 @@ var scope = app.Services.CreateScope();
 var unitOfWork = scope.ServiceProvider.GetService<UnitOfWork>();
 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-var imageService = scope.ServiceProvider.GetRequiredService<ImageService>();
 
-await DbInitializer.Initialize(context, userManager, unitOfWork, imageService);
+await DbInitializer.Initialize(context, userManager, unitOfWork);
 
 app.Run();

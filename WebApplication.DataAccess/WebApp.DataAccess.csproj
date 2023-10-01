@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Services\WebApp.Services.csproj" />
     <ProjectReference Include="..\WebApplication.Models\WebApp.Models.csproj" />
   </ItemGroup>
 

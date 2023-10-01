@@ -17,6 +17,7 @@ namespace WebApp.DataAccess.Repository.IRepository
 
         IViewedResidencesRepository ViewedResidences { get; }
 
+        ISearchedNeighborhoodsRepository SearchedNeighborhoods { get; }
         void Save();
     }
 }
